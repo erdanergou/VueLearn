@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/vue.min.js"></script>
+    <title>learn5</title>
+</head>
+<body>
+    <div id="app1">
+        <h1 v-if="awesome" >Vue is awesome!</h1>
+        <h1 v-else>Oh no ????</h1>
+    </div>
+    <script>
+        var app1 = new Vue({
+            el:"#app1",
+            data:{
+                awesome : true
+            }
+        })
+    </script>
+
+    <div id="app2">
+        <template v-if="ok">
+            <h1>Title true</h1>
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+        </template>
+        <template v-else>
+            <h1>Title else</h1>
+        </template>
+
+        <div v-if="Math.random() < 0.3">
+            Now you see me and random &lt 0.3
+        </div>
+        <div v-else-if="Math.random() > 0.3 && Math.random() < 0.6" >
+            you see me and random between 0.3 and 0.6
+        </div>
+        <div v-else>
+            random &gt 0.6
+        </div>
+    </div>
+    <script>
+        var app2 = new Vue({
+            el:"#app2",
+            data:{
+                ok : false
+            }
+        })
+    </script>
+
+
+    <div id = "app3">
+        <template v-if="'username' == loginType">
+            <label>username: </label><input placeholder="place input your username">
+        </template>
+        <template v-else>
+            <label>email: </label><input placeholder="place input your email">
+        </template>
+    </div>
+    <script>
+        var app3 = new Vue({
+            el:"#app3",
+            data:{
+                loginType : "username"
+            }
+        })
+    </script>
+
+    <div id = "app4">
+        <template v-if="'username' == loginType">
+            <label>username: </label><input placeholder="place input your username" key="username-input">
+        </template>
+        <template v-else>
+            <label>email: </label><input placeholder="place input your email" key="email-input">
+        </template>
+    </div>
+
+</body>
+</html>
