@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn11</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+    <!-- 动态组件 -->
+    <!-- 多个组件可以使用同一个挂载点，然后动态地在它们之间切换。使用保留的 <component>元素，动态地绑定到它的 is 特性 -->
+    <!-- Vue.js 提供了一个特殊的元素 ＜component> 用来动态地挂载不同的组件 使用 is 属性来选择要挂载的组件。 -->
+
+
+    <!-- is 属性绑定已注册组件的名字 -->
+    <div id="app1">
+        <button v-on:click="changeView('A')">切换到组件A</button>
+        <button v-on:click="changeView('B')">切换到组件B</button>
+        <button v-on:click="changeView('C')">切换到组件C</button>
+        <component :is="currentView"></component>
+    </div>
+    <script>
+        var app1 = new Vue({
+            el:"#app1",
+            data:{
+                currentView:"comA"
+            },
+            components:{
+                comA:{
+                    template:'<div>组件A</div>'
+                },
+                comB:{
+                    template:'<div>组件B</div>'
+                },
+                comC:{
+                    template:'<div>组件C</div>'
+                }
+            },
+            methods: {
+                changeView:function(value){ 
+                    this.currentView = 'com' + value
+                }
+            },
+        })
+    </script>
+
+    <!-- is 属性绑定组件对象 -->
+    <div id="app2">
+        <component :is="currentView"></component>
+    </div>
+    <script>
+        var home = {
+            template:'<div><h3>我是组件</h3></div>'
+        }
+        
+        var vm = new Vue({
+            el:"#app2",
+            data:{
+                currentView:home
+            }
+        })
+    </script>
+
+
+    <!--在动态组件上使用 keep-alive  -->
+
+    <div id="app3">
+        
+    </div>
+</body>
+</html>
