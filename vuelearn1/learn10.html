@@ -103,6 +103,38 @@
             }
         })
     </script>
-    
+
+    <!-- 单个slot -->
+    <script>
+        Vue.component('my-component',{
+            template:  `<div>
+                            <h2>I'm the child  title</h2>
+                            <slot>没有信息</slot>
+                        </div>`
+        })
+
+        Vue.component('father-component',{
+            template:`<div>
+                            <h2>I'm the father title</h2>
+                            <my-component>
+                                <!-- <p>This is some original content</p> -->
+                                <!-- <p>This is some more original content</p> -->
+                            </my-component>
+                      </div>`
+        })
+    </script>
+    <div id="app3">
+        <father-component></father-component>
+    </div>
+    <script>
+        new Vue({
+            el:"#app3",
+            data:{
+
+            }
+        })
+    </script>
+
+    <!-- <slot> 元素可以用一个特殊的属性 name 来配置如何分发内容。多个 slot 可以有不同的名字。具名 slot 将匹配内容片段中有对应 slot 特性的元素。 -->
 </body>
 </html>
