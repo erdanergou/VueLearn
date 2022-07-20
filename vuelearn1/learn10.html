@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn10</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+    <!-- 监听子组件事件 -->
+    <!-- <div id="blog-post-events-demo">
+        <div v-bind:style="{fontSize:postFontSize + 'em'}"> -->
+        <!-- <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post" v-on:enlarge-text="onEnlargeText"></blog-post> -->
+        <!-- <blog-post v-bind:title="title"></blog-post> -->
+        <!-- <blog-post v-bind:post="post"></blog-post> -->
+        <!-- </div> -->
+    <!-- </div> -->
+
+    <script>
+        // Vue.component('blog-post',{
+        //     template:  `
+        //     <div class="blog-post">
+        //         <h3>{{ post.title }}</h3>
+        //         <button v-on:click="$emit('enlarge-text')">Enlarge text</button>
+        //         <div>{{post.content}}</div>
+        //     </div>
+        //     `,
+            // porps:['post']
+            // template: `<h3>{{title}}</h3>`,
+            // props:['title']
+        // })
+
+        // var blogPostEventsDemo = new Vue({
+        //     el:"#blog-post-event-demo",
+        //     data:{
+        //         post:{title:"1",content:"sdads"},
+        //         postFontSize:1
+        //     }
+            // methods: {
+            //     onEnlargeText: function (enlargeAmount) {
+            //         this.postFontSize += enlargeAmount
+            //     }
+            // }
+        // })
+        // var blogPostEventsDemo = new Vue({
+        //     el:"#blog-post-events-demo",
+        //     data:{
+        //         title:"1235",
+        //         postFontSize:1
+        //     }
+        // })
+    </script>
+    <div id="app1">
+        <custom-input v-model="searchText"></custom-input>
+    </div>
+    <script>
+        Vue.component('custom-input', {
+        props: ['value'],
+        template: `
+            <input
+            v-bind:value="value"
+            v-on:input="$emit('input', $event.target.value)"
+            >
+            `
+        })
+
+        var app1 = new Vue({
+            el:"#app1",
+            data:{
+                searchText:""
+            }
+        })
+        
+    </script>
+    
+
+    <!-- 组件作用域简单地说是：父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译 -->
+
+    <!-- 无效 -->
+    <!-- <child-component v-show="someChildProperty"></child-component> -->
+    <div id="app2">
+        <child-component>
+            {{message}}
+        </child-component>
+    </div>
+    
+
+    <script>
+        Vue.component('child-compontent',{
+            template:'<div v-show="someChildProperty">Child</div>',
+            data:function(){
+                return{
+                    someChildProperty:true
+                }
+            }
+        })
+
+        var app2 = new Vue({
+            el:"#app2",
+            data:{
+                message:"123"
+            }
+        })
+    </script>
+
+</body>
+</html>
