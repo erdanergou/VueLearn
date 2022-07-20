@@ -7,8 +7,8 @@
         {
             "type": "pwa-msedge",
             "request": "launch",
-            "name": "Open learn11.html",
-            "file": "d:\\vuetest\\VueLearn\\vuelearn1\\learn11.html"
+            "name": "Open learn1.html",
+            "file": "d:\\vuetest\\VueLearn\\vuelearn2\\learn1.html"
         }
     ]
 }

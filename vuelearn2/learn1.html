@@ -5,8 +5,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>learn1</title>
+    <script src="js/vue.js"></script>
 </head>
 <body>
-    
+
+    <!-- 对于对象  -->
+
+    <!-- Vue 不能检测到对象属性的添加或删除。
+        因为 Vue 在初始化实例时将属性转为 getter/setter，所以属性必须在 data 对象上才能让 Vue 转换它，这样才能让它是响应的。 -->
+    <script>
+        var vm = new Vue({
+            data:{
+                // `vm.a` 是响应式的
+                a:1
+            }
+        })
+        // `vm.b` 是非响应式的
+        vm.b = 2
+        
+        // Vue 不允许在已经创建的实例上动态添加新的根级响应式属性。
+        // 然而它可以使用 Vue.set(object, key, value) 方法将响应属性添加到嵌套的对象上：
+        Vue.set(vm.smoeObject,'b',2)
+        // Vue.set 方法的别名
+        this.$set(vm.smoeObject, 'b', 2)
+
+
+        //若需要为已有对象赋值多个新property，如Object.assign() 或 _.extend()
+        //但是，这样添加到对象上的新 property 不会触发更新。
+        //在这种情况下，应该用原对象与要混合进去的对象的 property 一起创建一个新的对象。
+        // Object.assign(this.smoeObject,{a:1, b:2})
+        this.smoeObject = Object.assign({},this.smoeObject,{a: 1 ,b: 2})
+    </script>
+
+
+
+    <!-- 对于数组 -->
+    <!-- Vue 不能检测以下数组的变动：
+        当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
+        当你修改数组的长度时，例如：vm.items.length = newLength -->
+    <script>
+        var vm = new Vue({
+          data:{
+            items:['a', 'b', 'c']
+          }  
+        })
+
+        vm.items[0] = 'A'  // 不是响应的
+        // 解决方法1(Vue.set)
+        Vue.set(vm.items,indexOfItem,newValue)
+        this.$set(vm.items,indexOfItem,newValue)
+
+        // 解决方法2(Array.prototype.splice)
+        vm.items.splice(indexOfItem,1,newValue)
+
+        vm.items.length = 2  // 不是响应的
+        // 解决方法
+        vm.items.splice(newLength)
+    </script>
+
+
+    <!-- 声明响应式 property -->
+    <!-- 由于 Vue 不允许动态添加根级响应式 property，所以必须在初始化实例前声明所有根级响应式 property -->
+    <script>
+        var vm = new Vue({
+        data: {
+            // 声明 message 为一个空值字符串
+            message: ''
+        },
+        template: '<div>{{ message }}</div>'
+        })
+        // 之后设置 `message`
+        vm.message = 'Hello!'
+    </script>
 </body>
 </html>
