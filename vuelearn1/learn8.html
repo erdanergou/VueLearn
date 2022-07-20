@@ -80,5 +80,41 @@
             template:'<h3>{{title}}</h3>'
         })
     </script>
+    <!-- HTML 特性不区分大小写。当使用非字符串模版时，prop的名字形式会从 camelCase 转为 kebab-case（短横线隔开）： -->
+    <div id ="app4" >
+        <blog-post title="first"></blog-post>
+        <blog-post title="second"></blog-post>
+    </div>
+    <script>
+        new Vue({
+            el:"#app4",
+            data:{
+
+            }
+        })
+    </script>
+
+    <!-- 动态Props -->
+    <!-- 类似于用 v-bind 绑定HTML特性到一个表达式，也可以用v-bind动态绑定props的值到父组件的数据中。每当父组件的数据变化时，该变化也会传导给子组件 -->
+    <div id="app5">
+        <input v-model="parentMsg">
+        <br>
+        <blog-post v-bind:title="parentMsg"></blog-post>
+        <!-- v-bind 简写 -->
+        <blog-post :title="parentMsg"></blog-post>
+    </div>
+    <script>
+        new Vue({
+            el:"#app5",
+            data:{
+                parentMsg:""
+            }
+        })
+    </script>
+
+    <bolg-post title="1"></bolg-post> <!--"1"是以字符串的形式而非以实际的数字传下去-->
+    <bolg-post v-bind:title="1"></bolg-post><!--想传递JavaScript数字需要使用v-bind-->
+
+    
 </body>
 </html>
