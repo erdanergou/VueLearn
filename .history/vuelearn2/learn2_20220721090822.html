@@ -101,24 +101,6 @@
       </script>
 
       <style>
-        .bounce-enter-active{
-            animation: bounce-in .5s;
-        }
-        .bounce-leave-active {
-            animation: bounce-in .5s reverse;
-        }
-        /* 用来定义CSS动画的一个周期的行为，创建简单的动画。 */
-        @keyframes bounce-in {
-        0% {
-            transform: scale(0);
-        }
-        50% {
-            transform: scale(1.5);
-        }
-        100% {
-            transform: scale(1);
-        }
-        }
 
       </style>
       <div id="example-2">
@@ -128,12 +110,7 @@
         </transition>
       </div>
       <script>
-        new Vue({
-            el:"#example-2",
-            data:{
-                show:true
-            }
-        })
+        
       </script>
 </body>
 </html>

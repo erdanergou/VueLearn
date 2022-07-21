@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn4</title>
+    <!--
+        Velocity 和 jQuery.animate 的工作方式类似，也是用来实现 JavaScript 动画的一个很棒的选择
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+</head>
+<body>
+    <div id="example-1">
+        <button @click="show = !show">
+            Toggle
+        </button>
+        <transition v-on:before-enter="beforeEnter"
+        v-on:enter="enter"
+        v-on:before-leave="beforeLeave"
+        v-on:leave="leave"
+        v-bind:css="false">
+        <p v-if="show">Demo</p>
+        </transition>
+    </div>
+    <script>
+        new Vue({
+            el:"#example-1",
+            data:{
+                show:false
+            },
+            methods: {
+              beforeEnter:function(el){
+                el.style.opacity = 0
+                el.style.transformOrigin = 'left'
+              },
+              enter:function(el,done){
+                Velocity(el,{opacity})
+              }
+            },
+        })
+    </script>
+</body>
+</html>
