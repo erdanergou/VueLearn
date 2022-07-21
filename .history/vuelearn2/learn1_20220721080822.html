@@ -52,15 +52,15 @@
 
         vm.items[0] = 'A'  // 不是响应的
         // 解决方法1(Vue.set)
-        //Vue.set(vm.items,indexOfItem,newValue)
-        // this.$set(vm.items,indexOfItem,newValue)
+        Vue.set(vm.items,indexOfItem,newValue)
+        this.$set(vm.items,indexOfItem,newValue)
 
         // 解决方法2(Array.prototype.splice)
-        // vm.items.splice(indexOfItem,1,newValue)
+        vm.items.splice(indexOfItem,1,newValue)
 
         vm.items.length = 2  // 不是响应的
         // 解决方法
-        // vm.items.splice(newLength)
+        vm.items.splice(newLength)
     </script>
 
 
@@ -81,59 +81,12 @@
 
 
     <!--异步更新队列-->
-    <div id="example">
-        <div id="son">{{message}}</div>
-    </div>
+    <div id="example">{{message}}</div>
 
     <script>
         var example = new Vue({
-            el:"#son",
-            data:{
-                message:"123"
-            }
+            el:"#example"
         })
-        example.message = "new message"
-        console.log(example.$el)  // $el用于获取Vue实例挂载的DOM元素
-        // alert(example.$el.textContent)
-        console.log(example.$el.textContent == 'new message')  // false
-        Vue.nextTick(function(){   
-            //为了在数据变化之后等待 Vue 完成更新 DOM ，可以在数据变化之后立即使用 Vue.nextTick(callback) 。这样回调在 DOM 更新完成后就会调用
-            // alert(example.$el.textContent)
-            console.log(example.$el.textContent == 'new message') // true
-        })
-
-        //vm.$nextTick() 这个实例方法在组件内使用特别方便，因为它不需要全局 Vue ，它的回调 this 将自动绑定到当前的 Vue 实例上：
-    </script>
-    <div id="app2">
-        <h3 >{{message}}</h3>
-        <button @click="changeText">改变值</button>
-    </div>  
-    <script>
-        var app2 = new Vue({
-            el:"#app2",
-            data:{
-                message:"old message"
-            },
-            methods:{
-                changeText:function(){
-                    this.message = "new message"
-                    alert(this.$el.textContent)
-                    this.$nextTick(function(){
-                        alert(this.message)
-                    })
-                }
-            }
-            //因为 $nextTick() 返回一个 Promise 对象，所以你可以使用新的 ES2017 async/await 语法完成相同的事情：
-            // methods: {
-            // updateMessage: async function () {
-            //     this.message = '已更新'
-            //     console.log(this.$el.textContent) // => '未更新'
-            //     await this.$nextTick()
-            //     console.log(this.$el.textContent) // => '已更新'
-            // }
-            // }
-        })
-
     </script>
 </body>
 </html>

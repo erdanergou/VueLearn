@@ -105,35 +105,14 @@
         //vm.$nextTick() 这个实例方法在组件内使用特别方便，因为它不需要全局 Vue ，它的回调 this 将自动绑定到当前的 Vue 实例上：
     </script>
     <div id="app2">
-        <h3 >{{message}}</h3>
+        <p>{{message}}</p>
         <button @click="changeText">改变值</button>
     </div>  
     <script>
         var app2 = new Vue({
             el:"#app2",
-            data:{
-                message:"old message"
-            },
-            methods:{
-                changeText:function(){
-                    this.message = "new message"
-                    alert(this.$el.textContent)
-                    this.$nextTick(function(){
-                        alert(this.message)
-                    })
-                }
-            }
-            //因为 $nextTick() 返回一个 Promise 对象，所以你可以使用新的 ES2017 async/await 语法完成相同的事情：
-            // methods: {
-            // updateMessage: async function () {
-            //     this.message = '已更新'
-            //     console.log(this.$el.textContent) // => '未更新'
-            //     await this.$nextTick()
-            //     console.log(this.$el.textContent) // => '已更新'
-            // }
-            // }
+            data
         })
-
     </script>
 </body>
 </html>
