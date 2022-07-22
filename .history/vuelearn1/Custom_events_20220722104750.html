@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn9</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+    <!-- 自定义事件  推荐始终使用 kebab-case 的事件名。-->
+    <!-- 父组件是使用 props 传递数据给子组件，子组件要把数据传递回去使用自定义事件！ -->
+    
+    <!-- 使用v-on绑定自定义事件 -->
+    <!-- 使用$on(eventName)监听事件 
+         使用$emit(eventName)触发事件-->
+    
+    <div id="counter-event-example">
+        <p>{{total}}</p>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+        <button-counter></button-counter>  <!--不进行对increment事件的监听，无法调用incrementTotal事件-->
+    </div>
+    <script>
+        Vue.component('button-counter',{
+            template:'<button v-on:click="increment">{{counter}}</button>',
+            data:function(){
+                return {
+                    counter:0
+                }
+            },
+            methods:{
+                increment:function(){
+                    this.counter += 1;
+                    this.$emit('increment')
+                }
+            }
+        })
+        new Vue({
+            el:"#counter-event-example",
+            data:{
+                total:0
+            },
+            methods:{
+                incrementTotal:function(){
+                    this.total += 1
+                }
+            }
+        })
+    </script>
+
+    <!-- 想在某个组件的根元素上监听一个原生事件。可以使用 .native 修饰 v-on  -->
+    <!-- <my-component v-on:click.native="doTheThing"></my-component> -->
+
+    <!-- 自定义事件也可以用来创建自定义的表单输入组件，使用 v-model 来进行数据双向绑定 -->
+    <input v-model="something">
+    <!-- 仅仅是一个语法-->
+    <input v-bind:value="something" v-on:input="something = $event.target.value">
+    <!-- 相当于下列简写 -->
+    <input v-bind:value="something" v-on:input="something = arguments[0]">
+
+    <hr>
+
+    <!-- 一个组件上的 v-model 默认会利用名为 value 的 prop 和名为 input 的事件 -->
+    <!-- 所以要让组件的 v-model 生效，它必须：
+        1.接受一个 value 属性
+        2.在有新的 value 时触发 input 事件 -->
+    <div id="current-input">
+        <current-input v-model="price"></current-input>
+    </div>
+    <script>
+        Vue.component('current-input',{
+            template:'<input ref="input" v-bind:value="value" v-on:input="updateValue($event.target.value)">',
+            props:["value"],
+            methods:{
+                updateValue:function(value){
+                    var formattedValue = value.trim().slice(0,value.indexOf('.') + 3)
+                    if (formattedValue != value){
+                        this.$refs.input.value = formattedValue
+                    }
+                    this.$emit('input',Number(formattedValue))
+                }
+            }
+        })
+
+        var currentInput = new Vue({
+            el:"#current-input",
+            data:{
+                price:""
+            }
+        })
+    </script>
+
+    <!-- 但是但是像单选框、复选框等类型的输入控件可能会将 value attribute 用于不同的目的。model 选项可以用来避免这样的冲突： -->
+    <script>
+        Vue.component('base-checkbox',{
+            model:{
+                prop:'checked',
+                event:'change'
+            },
+            props:{
+                checked:Boolean   //注意仍然需要在组件的 props 选项里声明 checked 这个 prop。
+            },
+            template:'<input type="checkbox" v-bind:checked="checked" v-on:change="$emit('+'\'change\''+',$event.target.checked)">'
+        })
+    </script>
+    <div id="base-checkbox">
+        <base-checkbox  v-model="lovingVue"></base-checkbox>
+    </div>
+    <script>
+        var baseCheckbox = new Vue({
+            el:"#base-checkbox",
+            data:{
+                lovingVue:""
+            }
+        })
+    </script>
+
+
+    <!-- 将原生事件绑定到组件 -->
+    <script>
+        Vue.component("base-input",{
+            template:`<input type=>`
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chacao</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <!-- 插槽内可以包含任何模板代码,包括html甚至其他组件 -->
+    <script>
+        Vue.component("navigation-link",{
+            template:`
+            <a v-bind:href="url" class="nav-link">
+                <slot></slot>
+            </a>
+            `
+        })
+    </script>
+    <navigation-link url="#">
+        <span>123</span>
+    </navigation-link>
+    <br>
+    <!-- 编译作用域 -->
+    <!-- 该插槽跟模板的其它地方一样可以访问相同的实例 property (也就是相同的“作用域”)，而不能访问 <navigation-link> 的作用域。 -->
+    
+    <navigation-link url="#" id="example-1">
+        访问数据{{user.name}}
+        <br>
+       
+    </navigation-link>
+    <script>
+        var example1 = new Vue({
+            el:"#example-1",
+            data:{
+                user:{
+                    name:"张三"
+                }
+            }
+        })
+    </script>
+</body>
+</html>

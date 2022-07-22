@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn8</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+    <!-- 创建实例使用new Vue({}) 而在要注册全局组件可以使用 Vue.component(tagName, options) -->
+
+    <!-- 全局注册（它们在注册之后可以用在任何新创建的 Vue 根实例 (new Vue) 的模板中 即谁都可以用） -->
+   <div id="app1">
+        <my-firstcomponent></my-firstcomponent>
+   </div>
+   <script>
+    Vue.component(
+        'my-firstcomponent',{
+            template:'<div> my first component! </div>'
+        }
+    )
+    var app1 = new Vue({
+        el:"#app1",
+        data:{}
+    })
+   </script>
+
+
+    <!-- 局部注册 只能用于该组件中-->
+    <!-- 局部注册的组件在其子组件中不可用 -->
+    <div id="app2">
+        <my-secondcomponent></my-secondcomponent>
+    </div>
+    <script>
+        var Child = {
+            template:'<div> A custom component!</div>'
+        }
+        var app2 = new Vue({
+            el:"#app2",
+            data:{},
+            components:{
+            'my-secondcomponent':Child
+          }  
+        })
+    </script>
+
+
+    <!-- data必须是函数 -->
+    <!-- 一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝 -->
+    <div id="app3">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+    </div>
+    <script>
+        Vue.component('button-counter',{
+            data:function(){
+                return {
+                    count:0
+                }
+            },
+            // data:{
+            //     count:0
+            // },
+        template:'<button v-on:click="count += 1">你点击了我{{count}}次</button>'
+        })
+        var app3 = new Vue({
+            el:"#app3",
+            data:{
+
+            }
+        })
+    </script>
+
+    <!-- 组件实例的作用域是孤立的即不能并且不应该在子组件的模板内直接引用父组件的数据，可以使用props把数据传给子组件 -->
+    <!-- prop 是父组件用来传递数据的一个自定义属性。子组件需要显式地用 props 选项 声明 “prop” -->
+    <script>
+        Vue.component("blog-post",{
+            props:['title'],
+            template:'<h3>{{title}}</h3>'
+        })
+    </script>
+    <!-- HTML 特性不区分大小写。当使用非字符串模版时，prop的名字形式会从 camelCase 转为 kebab-case（短横线隔开）： -->
+    <div id ="app4" >
+        <blog-post title="first"></blog-post>
+        <blog-post title="second"></blog-post>
+    </div>
+    <script>
+        new Vue({
+            el:"#app4",
+            data:{
+
+            }
+        })
+    </script>
+
+    <!-- 动态Props -->
+    <!-- 类似于用 v-bind 绑定HTML特性到一个表达式，也可以用v-bind动态绑定props的值到父组件的数据中。每当父组件的数据变化时，该变化也会传导给子组件 -->
+    <div id="app5">
+        <input v-model="parentMsg">
+        <br>
+        <blog-post v-bind:title="parentMsg"></blog-post>
+        <!-- v-bind 简写 -->
+        <blog-post :title="parentMsg"></blog-post>
+    </div>
+    <script>
+        new Vue({
+            el:"#app5",
+            data:{
+                parentMsg:""
+            }
+        })
+    </script>
+
+    <bolg-post title="1"></bolg-post> <!--"1"是以字符串的形式而非以实际的数字传下去-->
+    <bolg-post v-bind:title="1"></bolg-post><!--想传递JavaScript数字需要使用v-bind-->
+
+    <!-- prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是不会反过来。这是为了防止子组件无意修改了父组件的状态 -->
+    <!-- 每次父组件更新时，子组件的所有 prop 都会更新为最新值 -->
+    <!-- 有两种改变 prop 的情况：-->
+    <!-- 1. prop 作为初始值传入，子组件之后只是将它的初始值作为本地数据的初始值使用； -->
+    <script>
+        var test1 = new Vue({
+            props:['initialCounter'],
+            data:function(){
+                return {counter:this.initiaCounter}
+            }
+        })
+    </script>
+    <!-- 2. prop 作为需要被转变的原始值传入。 -->
+    <script>
+        var test2 = new Vue({
+            props:['size'],
+            computed:{
+                normalizedSize:function(){
+                    return this.size.trim().toLowerCase()
+                }
+            }
+        })
+    </script>
+    <!-- 在 JavaScript 中对象和数组是引用类型，指向同一个内存空间，如果 prop 是一个对象或数组，在子组件内部改变它会影响父组件的状态。 -->
+
+
+    <!-- 组件可以为 props 指定验证要求。如果未指定验证要求，Vue 会发出警告 -->
+    <script>
+        Vue.component('example',{
+            props:{
+                PropA:Number, // 基础检测类型
+                PropB:[String, Number], // 多种类型
+                PropC:{  // 字符串类型且必须传递
+                    type:String,
+                    requried:true
+                },
+                PropD:{ // 数字且有默认值
+                    type:Number,
+                    default:100
+                },
+                PropE:{  // 数组/对象的默认值应当由一个工厂函数返回
+                    type:Object,
+                    default:function(){
+                        return {message: 'hello'}
+                    }
+                },
+                PropF:{ // 自定义验证函数
+                    validator:function(value){
+                        return value > 10
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

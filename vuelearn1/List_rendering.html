@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/vue.min.js"></script>
+    <title>learn5</title>
+</head>
+<body>
+ <div id="app1">
+    <ul id="example1">
+        <li v-for="(item, index) in items">
+            {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+    </ul>
+ </div>
+ <script>
+    var example1 = new Vue({
+        el:"#example1",
+        data:{
+            parentMessage: 'Parent',
+            items:[
+                {message:'Bar'},
+                {message:'Foo'}
+            ]
+        }
+    })
+ </script>
+
+
+<div id="app2">
+    <ul id="example2">
+        <template v-for="item in items">
+            <li>{{item.msg}}</li>
+            <li class="divider"></li>
+        </template>
+    </ul>
+</div>
+<script>
+    var example2 = new Vue({
+        el:"#example2",
+        data:{
+            items:[
+                {msg:"John"},
+                {msg:"Tom"}
+            ]
+        }
+    })
+</script>
+
+<div id="app3">
+    <ul id="repeat-object" class="demo">
+        <li v-for="(value,key,index) in object">
+          {{index}} - {{key}} - {{value}}
+        </li>
+    </ul>
+</div>
+
+<script>
+    var repeatObject = new Vue({
+        el:"#repeat-object",
+        data:{
+            object:{
+                FirstName : "John",
+                LastName : "Doe",
+                Age : 22
+            }
+        }
+    })
+</script>
+
+<div>
+    <span v-for="n in 10">{{n}}</span>
+</div>
+
+
+<div id="app4">
+    <ul id="sortArray">
+        <li v-for="n in evenNumbers">{{n}}</li>
+    </ul>
+</div>
+<script>
+    var sortArray = new Vue({
+        el:"#sortArray",
+        data:{
+            number:[1,2,3,4,5]
+        },
+        computed:{
+            evenNumbers:function(){
+                return this.number.filter(function (number){
+                    return number % 2 == 0
+                })
+            }
+        }
+    })
+</script>
+
+<div id="app5">
+    <ul id="sortArrayByMethod">
+        <li v-for="n in even(numbers)" >{{n}}</li>
+    </ul>
+</div>
+
+<script>
+    var sortArrayByMethod = new Vue({
+        el:"#sortArrayByMethod",
+        data:{
+            numbers : [1, 2, 3, 4, 5, 6],
+        },
+        methods:{
+               even:function(numbers){
+                return numbers.filter(function(number){
+                   return number % 2 == 0
+                })
+               }
+            }
+    })
+</script>
+
+<!-- app4 与 app5中 computed与methods的区别（另附watch）
+1. watch 和 computed 都是以 Vue 的依赖追踪机制为基础的，当某一个数据发生变化的时候，
+所有依赖这个数据的“相关”数据“自动”发生变化，也就是自动调用相关的函数去实现数据的变动
+2. methods 里面是用来定义函数的，它需要手动调用才能执行。而不像 watch 和 computed 那样，
+“自动执行”预先定义的函数，相比于 watch / computed，methods 不处理数据逻辑关系，只提供可调用的函数
+
+methods 里面定义的是函数，仍然需要去调用它。
+computed 是计算属性，事实上和 data 对象里的数据属性是同一类的（使用上）。
+watch：类似于监听机制+事件机制
+-->
+
+
+<!-- 为达到类似vm.items[indexOfItem] = newValue 的效果
+    1，Vue.set(example1.items, indexOfItem, newValue) 
+    2. example1.items.splice(indexOfItem, 1, newValue)
+
+    为达到类似vm.items.length = newLength的效果
+    example1.items.splice(newLength)
+
+ -->
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn5</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <!-- <script>
+        import componentA from "js/ComponentA.js"
+        import ComponentB from "js/ComponentB.js"
+
+        export default{
+            components:{
+                componentA,
+                ComponentB
+            },
+        }
+    </script> -->
+
+    <div id="app1">
+        <blog-post title="My journey with me" ></blog-post>
+        <blog-post v-bind:title="post.title"></blog-post>
+        <blog-post v-bind:title="post.title + 'by' +post.author.name"></blog-post>
+        <blog-post v-bind:num="42"></blog-post>
+        <blog-post v-bind:num="post.num"></blog-post>
+        <blog-post is-published></blog-post>  <!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
+        <blog-post v-bind:is-published="false"></blog-post>
+        <blog-post v-bind:comment-ids="[123,23,231]" ></blog-post> <!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+        <blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+        <blog-post v-bind:author="{name:'Verctor',company:'LJ'}"></blog-post>
+        <blog-post v-bind:author="post.author"></blog-post>
+        <blog-post v-bind:author="post"></blog-post>
+    </div>
+
+    <script>
+        Vue.component("blog-post",{
+            template:'<h3>{{title}}{{num}}{{isPublished}}{{commentIds}}{{author}}</h3>',
+            // props:['postTitle']
+            props:{
+                title:String,
+                num:Number,
+                isPublished:Boolean,
+                commentIds: Array,
+                author: Object,
+                callback: Function,
+                contactsPromise: Promise,
+                post:{
+                    title:String,
+                    num:Number,
+                    commentIds:Array,
+                    author:{
+                        name:String
+                    },
+                }
+                
+            }
+        })
+        
+        new Vue({
+            el:"#app1",
+            data:{
+                num:0,
+                post:{
+                    title:"name",
+                    num:12,
+                    author:{
+                        name:"张三"
+                    },
+                    commentIds:[123,3,4,5,6]
+                },
+                // isPublished:true
+                
+            }
+        })
+
+    </script>
+
+    <script>
+        // 两种常见的试图变更一个 prop 的情形：
+        // 1. 这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用。
+        // 在这种情况下，最好定义一个本地的 data property 并将这个 prop 用作其初始值：
+        var vm = new Vue({
+            props:['initialCounter'],
+            data:function(){
+                return {
+                    counter:this.initialCounter
+                }
+            }
+        })
+
+        // 2.这个 prop 以一种原始的值传入且需要进行转换。
+        // 在这种情况下，最好使用这个 prop 的值来定义一个计算属性：
+        var vm2 = new Vue({
+            props: ['size'],
+            computed: {
+                normalizedSize: function () {
+                    return this.size.trim().toLowerCase()
+                }
+            }
+        })
+    </script>
+
+    
+    <!-- 动态Props -->
+    <!-- 类似于用 v-bind 绑定HTML特性到一个表达式，也可以用v-bind动态绑定props的值到父组件的数据中。每当父组件的数据变化时，该变化也会传导给子组件 -->
+    <div id="app5">
+        <input v-model="parentMsg">
+        <br>
+        <blog-post v-bind:title="parentMsg"></blog-post>
+        <!-- v-bind 简写 -->
+        <blog-post :title="parentMsg"></blog-post>
+    </div>
+    <script>
+        new Vue({
+            el:"#app5",
+            data:{
+                parentMsg:""
+            }
+        })
+    </script>
+
+    <bolg-post title="1"></bolg-post> <!--"1"是以字符串的形式而非以实际的数字传下去-->
+    <bolg-post v-bind:title="1"></bolg-post><!--想传递JavaScript数字需要使用v-bind-->
+
+    <!-- prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是不会反过来。这是为了防止子组件无意修改了父组件的状态 -->
+    <!-- 每次父组件更新时，子组件的所有 prop 都会更新为最新值 -->
+    <!-- 有两种改变 prop 的情况：-->
+    <!-- 1. prop 作为初始值传入，子组件之后只是将它的初始值作为本地数据的初始值使用； -->
+    <script>
+        var test1 = new Vue({
+            props:['initialCounter'],
+            data:function(){
+                return {counter:this.initiaCounter}
+            }
+        })
+    </script>
+    <!-- 2. prop 作为需要被转变的原始值传入。 -->
+    <script>
+        var test2 = new Vue({
+            props:['size'],
+            computed:{
+                normalizedSize:function(){
+                    return this.size.trim().toLowerCase()
+                }
+            }
+        })
+    </script>
+    <!-- 在 JavaScript 中对象和数组是引用类型，指向同一个内存空间，如果 prop 是一个对象或数组，在子组件内部改变它会影响父组件的状态。 -->
+
+
+    <!-- 组件可以为 props 指定验证要求。如果未指定验证要求，Vue 会发出警告 -->
+    <script>
+        Vue.component('example',{
+            props:{
+                PropA:Number, // 基础检测类型
+                PropB:[String, Number], // 多种类型
+                PropC:{  // 字符串类型且必须传递
+                    type:String,
+                    requried:true
+                },
+                PropD:{ // 数字且有默认值
+                    type:Number,
+                    default:100
+                },
+                PropE:{  // 数组/对象的默认值应当由一个工厂函数返回
+                    type:Object,
+                    default:function(){
+                        return {message: 'hello'}
+                    }
+                },
+                PropF:{ // 自定义验证函数
+                    validator:function(value){
+                        return value > 10
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

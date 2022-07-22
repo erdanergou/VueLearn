@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn5</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <!-- <script>
+        import componentA from "js/ComponentA.js"
+        import ComponentB from "js/ComponentB.js"
+
+        export default{
+            components:{
+                componentA,
+                ComponentB
+            },
+        }
+    </script> -->
+
+    <div id="app1">
+        <blog-post title="My journey with me" ></blog-post>
+        <blog-post v-bind:title="post.title"></blog-post>
+        <blog-post v-bind:title="post.title + 'by' +post.author.name"></blog-post>
+        <blog-post v-bind:num="42"></blog-post>
+        <blog-post v-bind:num="post.num"></blog-post>
+        <blog-post is-published></blog-post>  <!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
+        <blog-post v-bind:is-published="false"></blog-post>
+        <blog-post v-bind:comment-ids="[123,23,231]" ></blog-post> <!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+        <blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+        <blog-post v-bind:author="{name:'Verctor',company:'LJ'}"></blog-post>
+        <blog-post v-bind:author="post.author"></blog-post>
+        <blog-post v-bind:author="post"></blog-post>
+    </div>
+
+    <script>
+        Vue.component("blog-post",{
+            template:'<h3>{{title}}{{num}}{{isPublished}}{{commentIds}}{{author}}</h3>',
+            // props:['postTitle']
+            props:{
+                title:String,
+                num:Number,
+                isPublished:Boolean,
+                commentIds: Array,
+                author: Object,
+                callback: Function,
+                contactsPromise: Promise,
+                post:{
+                    title:String,
+                    num:Number,
+                    commentIds:Array,
+                    author:{
+                        name:String
+                    },
+                }
+                
+            }
+        })
+        
+        new Vue({
+            el:"#app1",
+            data:{
+                num:0,
+                post:{
+                    title:"name",
+                    num:12,
+                    author:{
+                        name:"张三"
+                    },
+                    commentIds:[123,3,4,5,6]
+                },
+                // isPublished:true
+                
+            }
+        })
+
+    </script>
+
+    <script>
+        // 这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用。
+        // 在这种情况下，最好定义一个本地的 data property 并将这个 prop 用作其初始值：
+        var vm = new Vue({
+            props:['initialCounter'],
+            
+        })
+    </script>
+</body>
+</html>
