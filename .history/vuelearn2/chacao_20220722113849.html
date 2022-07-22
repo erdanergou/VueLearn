@@ -88,22 +88,15 @@
     <!-- 作用域插槽 -->
     <script>
         Vue.component('current-user',{
-            template:'<span><slot >{{user.lastName}}</slot></span>',
-            props:{
-                user:{
-                    firstName : String,
-                    lastName : String
-                }
-            }
+            template:`<span>
+                        <slot>{{user.lastName}}</slot>
+                    </span>`,
+            pro
         })
     </script>
     <br>
     <div id="app1">
-        <current-user>
-            <!-- <template v-slot:default="slotProps">
-              {{ slotProps.user.firstName }}
-            </template> -->
-          </current-user>
+        
     </div>
 
     <script>
@@ -111,8 +104,7 @@
             el:"#app1",
             data:{
                 user:{
-                    firstName:"小",
-                    lastName:"垃圾",
+                    lastName:"垃圾"
                 }
             }
         })

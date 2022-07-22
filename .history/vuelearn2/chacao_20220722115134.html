@@ -88,7 +88,7 @@
     <!-- 作用域插槽 -->
     <script>
         Vue.component('current-user',{
-            template:'<span><slot >{{user.lastName}}</slot></span>',
+            template:'<span><slot v-bind:user="user">{{user.lastName}}</slot></span>',
             props:{
                 user:{
                     firstName : String,
@@ -100,10 +100,11 @@
     <br>
     <div id="app1">
         <current-user>
-            <!-- <template v-slot:default="slotProps">
-              {{ slotProps.user.firstName }}
-            </template> -->
-          </current-user>
+            <template slot:default="slotProps">
+                {{slotProps.user.firstName}}
+                {{user.firstName}}
+            </template>
+        </current-user>
     </div>
 
     <script>

@@ -7,8 +7,8 @@
         {
             "type": "pwa-msedge",
             "request": "launch",
-            "name": "Open chacao.html",
-            "file": "d:\\vuetest\\VueLearn\\vuelearn2\\chacao.html"
+            "name": "Open porp.html",
+            "file": "d:\\vuetest\\VueLearn\\vuelearn2\\prop.html"
         }
     ]
 }
