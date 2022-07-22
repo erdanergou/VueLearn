@@ -1,0 +1,1 @@
+Vue.component("component-a")

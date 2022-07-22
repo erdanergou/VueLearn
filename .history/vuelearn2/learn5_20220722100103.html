@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn5</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <!-- <script>
+        import componentA from "js/ComponentA.js"
+        import ComponentB from "js/ComponentB.js"
+
+        export default{
+            components:{
+                componentA,
+                ComponentB
+            },
+        }
+    </script> -->
+
+    <div id="app1">
+        <blog-post title="My journey with me" ></blog-post>
+        <blog-post v-bind:title="post.title"></blog-post>
+        <blog-post v-bind:title="post.title + 'by' +post.author.name"></blog-post>
+        <blog-post v-bind:num="num"></blog-post>
+        <blog-post v-bind:num="post.num"></blog-post>
+    </div>
+
+    <script>
+        Vue.component("blog-post",{
+            template:'<h3>{{title}}</h3>',
+            // props:['postTitle']
+            props:{
+                title:String,
+                num:Number,
+                isPublished:Boolean,
+                commentIds: Array,
+                author: Object,
+                callback: Function,
+                contactsPromise: Promise,
+                post:{
+                    title:String,
+                    name:Number
+                    author:{
+                        name:String
+                    },
+                }
+                
+            }
+        })
+        
+        new Vue({
+            el:"#app1",
+            data:{
+                num:1,
+                post:{
+                    title:"name",
+                    author:{
+                        name:"张三"
+                    }
+                },
+                
+            }
+        })
+
+    </script>
+</body>
+</html>

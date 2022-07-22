@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learn5</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <!-- <script>
+        import componentA from "js/ComponentA.js"
+        import ComponentB from "js/ComponentB.js"
+
+        export default{
+            components:{
+                componentA,
+                ComponentB
+            },
+        }
+    </script> -->
+
+    <div id="app1">
+        <blog-post post-title="hello"></blog-post>
+    </div>
+
+    <script>
+        Vue.component("blog-post",{
+            template:'<h3>{{postTitle}}</h3>',
+            props:['postTitle']
+        })
+        
+        new Vue({
+            el:"#app1",
+            data:{
+                postTitle:""
+            }
+        })
+
+    </script>
+</body>
+</html>
